@@ -5,3 +5,20 @@
  */
 
 require('./bootstrap');
+
+import Vue from 'vue';
+import Routes from './routes.js';
+
+import App from './views/App';
+
+import MenuComponent from './components/MenuComponent';
+
+Vue.component('menu-component', MenuComponent);
+
+const app = new Vue({
+    el: '#app',
+    components: {
+        App
+    },
+    router: Routes,
+});
