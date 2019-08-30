@@ -66,10 +66,13 @@
             }
         },
         created() {
-            api.find(this.$route.params.id).then((response) => {
-                this.loaded = true;
-                this.user = response.data.data;
-            });
+            api.find(this.$route.params.id)
+                .then((response) => {
+                    this.loaded = true;
+                    this.user = response.data.data;
+                }).catch((err) => {
+                    this.$router.push({ name: '404' });
+                });
         }
     };
 </script>
