@@ -9,6 +9,7 @@
                 <strong>Name:</strong> {{ name }},
                 <strong>Email:</strong> {{ email }}
                 <strong>Telefone:</strong> {{ telefone }}
+                <router-link :to="{ name: 'users.edit', params: { id } }">Edit</router-link>
             </li>
         </ul>
 
