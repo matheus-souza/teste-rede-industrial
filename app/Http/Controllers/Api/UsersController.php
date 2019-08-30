@@ -18,3 +18,17 @@ class UsersController extends Controller
     {
         return new UserResource($user);
     }
+
+    public function update(User $user, Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'telefone' => 'required',
+        ]);
+
+        $user->update($data);
+
+        return new UserResource($user);
+    }
+}
