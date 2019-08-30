@@ -13,15 +13,8 @@
                     <li class="nav-item">
                         <router-link class="nav-link" active-class="active" :to="{ name: 'hello' }" clas>Hello</router-link>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Usuários
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Ação</a>
-                            <a class="dropdown-item" href="#">Outra ação</a>
-                            <a class="dropdown-item" href="#">Algo mais aqui</a>
-                        </div>
+                    <li class="nav-item">
+                        <router-link class="nav-link" active-class="active" :to="{ name: 'users.index' }" clas>Usuários</router-link>
                     </li>
                 </ul>
             </div>
