@@ -9,16 +9,34 @@ use App\Http\Controllers\Controller;
 
 class UsersController extends Controller
 {
+    /**
+     * Lista usuários
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function index()
     {
         return UserResource::collection(User::paginate(10));
     }
 
+    /**
+     * Retorna um usuário especifico
+     *
+     * @param User $user
+     * @return UserResource
+     */
     public function show(User $user)
     {
         return new UserResource($user);
     }
 
+    /**
+     * Atualiza um usuário especifico
+     *
+     * @param User $user
+     * @param Request $request
+     * @return UserResource
+     */
     public function update(User $user, Request $request)
     {
         $data = $request->validate([
@@ -30,5 +48,19 @@ class UsersController extends Controller
         $user->update($data);
 
         return new UserResource($user);
+    }
+
+    /**
+     * Deleta usuário especifico
+     *
+     * @param User $user
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Exception
+     */
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return response(null, 204);
     }
 }
