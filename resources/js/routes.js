@@ -8,6 +8,7 @@ import Hello from './views/Hello';
 import Home from './views/Home';
 import UsersIndex from './views/UsersIndex';
 import UsersEdit from './views/UserEdit';
+import UsersCreate from './views/UsersCreate';
 
 const router = new VueRouter({
     mode: 'history',
@@ -40,6 +41,11 @@ const router = new VueRouter({
             path: '/users/:id/edit',
             name: 'users.edit',
             component: UsersEdit,
+        },
+        {
+            path: '/users/create',
+            name: 'users.create',
+            component: UsersCreate,
         },
     ],
 });
