@@ -18,6 +18,10 @@
             {{ paginatonCount }}
             <button :disabled="!nextPage" @click.prevent="goToNext">Next</button>
         </div>
+
+        <div>
+            <router-link :to="{ name: 'users.create' }">Add User</router-link>
+        </div>
     </div>
 </template>
 <script>
