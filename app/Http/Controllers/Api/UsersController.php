@@ -31,6 +31,27 @@ class UsersController extends Controller
     }
 
     /**
+     * Cria um usuário
+     *
+     * @param Request $request
+     * @return UserResource
+     */
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'telefone' => 'required',
+        ]);
+
+        return new UserResource(User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'telefone' => $data['telefone'],
+        ]));
+    }
+
+    /**
      * Atualiza um usuário especifico
      *
      * @param User $user
