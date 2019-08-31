@@ -3,9 +3,9 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
-import NotFound from './views/NotFound';
+import NotFound from './views/errors/NotFound';
 import UsersIndex from './views/UsersIndex';
-import UsersEdit from './views/UserEdit';
+import UsersEdit from './views/UsersEdit';
 import UsersCreate from './views/UsersCreate';
 
 const router = new VueRouter({
