@@ -4,8 +4,6 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 import NotFound from './views/NotFound';
-import Hello from './views/Hello';
-import Home from './views/Home';
 import UsersIndex from './views/UsersIndex';
 import UsersEdit from './views/UserEdit';
 import UsersCreate from './views/UsersCreate';
@@ -25,12 +23,9 @@ const router = new VueRouter({
         {
             path: '/',
             name: 'home',
-            component: Home
-        },
-        {
-            path: '/hello',
-            name: 'hello',
-            component: Hello,
+            redirect: {
+                name: 'users.index'
+            }
         },
         {
             path: '/users',
