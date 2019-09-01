@@ -13,11 +13,23 @@
             </li>
         </ul>
 
-        <div class="pagination">
-            <button :disabled="!prevPage" @click.prevent="goToPrev">Previous</button>
-            {{ paginatonCount }}
-            <button :disabled="!nextPage" @click.prevent="goToNext">Next</button>
-        </div>
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item" v-bind:class="{ disabled: !prevPage }">
+                    <a class="page-link" href="#" tabindex="-1" @click.prevent="goToPrev">Anterior</a>
+                </li>
+
+                <li v-for="{ pageItem, active } in pageCounter" class="page-item" v-bind:class="{ active: active }">
+                    <a href="#" class="page-link" @click.prevent="goToPage(pageItem)">
+                        {{ pageItem }} <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
+                <li class="page-item" v-bind:class="{ disabled: !nextPage }">
+                    <a class="page-link" href="#" @click.prevent="goToNext">Próxima</a>
+                </li>
+            </ul>
+        </nav>
 
         <div>
             <router-link :to="{ name: 'users.create' }">Add User</router-link>
@@ -30,13 +42,12 @@
     const getUsers = (page, callback) => {
         const params = {page};
 
-        axios
-            .get('/api/users', {params})
+        axios.get('/api/users', {params})
             .then(response => {
                 callback(null, response.data);
             }).catch(error => {
-            callback(error, error.response.data);
-        });
+                callback(error, error.response.data);
+            });
     };
 
     export default {
@@ -68,14 +79,22 @@
 
                 return this.meta.current_page - 1;
             },
-            paginatonCount() {
+            pageCounter() {
                 if (!this.meta) {
                     return;
                 }
 
                 const {current_page, last_page} = this.meta;
 
-                return `${current_page} of ${last_page}`;
+                const pages = [];
+                for (var item = 1; item <= last_page; item++) {
+                    pages.push({
+                        pageItem: item,
+                        active: item === current_page,
+                    });
+                }
+
+                return pages;
             },
         },
         beforeRouteEnter(to, from, next) {
@@ -93,6 +112,13 @@
             });
         },
         methods: {
+            goToPage(page) {
+                this.$router.push({
+                    query: {
+                        page: page,
+                    },
+                });
+            },
             goToNext() {
                 this.$router.push({
                     query: {
