@@ -1,7 +1,7 @@
 <template>
     <div class="users">
-        <div v-if="error" class="error">
-            <p>{{ error }}</p>
+        <div v-if="error" class="alert alert-warning mt-3" role="alert">
+            {{ error }}
         </div>
 
         <h2 class="mt-3 mb-3">Lista de usuários</h2>
@@ -19,7 +19,7 @@
             <tr v-for="({ id, name, email, telefone }, index) in users">
                 <td>{{ name }}</td>
                 <td>{{ email }}</td>
-                <td>{{ telefone }}</td>
+                <td>{{ telefone.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3') }}</td>
                 <td>
                     <router-link :to="{ name: 'users.edit', params: { id } }" tag="button" class="btn btn-outline-secondary">Editar</router-link>
                     <button @click.prevent="onDelete(id, index)" class="btn btn-outline-danger">Delete</button>
