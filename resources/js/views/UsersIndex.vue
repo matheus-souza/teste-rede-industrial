@@ -4,17 +4,32 @@
             <p>{{ error }}</p>
         </div>
 
-        <ul v-if="users">
-            <li v-for="{ id, name, email, telefone } in users">
-                <strong>Name:</strong> {{ name }},
-                <strong>Email:</strong> {{ email }}
-                <strong>Telefone:</strong> {{ telefone }}
-                <router-link :to="{ name: 'users.edit', params: { id } }">Edit</router-link>
-            </li>
-        </ul>
+        <h2 class="mt-3 mb-3">Lista de usuários</h2>
+
+        <table class="table table-hover" v-if="users">
+            <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Telefone</th>
+                <th scope="col">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="({ id, name, email, telefone }, index) in users">
+                <td>{{ name }}</td>
+                <td>{{ email }}</td>
+                <td>{{ telefone }}</td>
+                <td>
+                    <router-link :to="{ name: 'users.edit', params: { id } }" tag="button" class="btn btn-outline-secondary">Editar</router-link>
+                    <button @click.prevent="onDelete(id, index)" class="btn btn-outline-danger">Delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
         <nav aria-label="...">
-            <ul class="pagination">
+            <ul class="pagination justify-content-end">
                 <li class="page-item" v-bind:class="{ disabled: !prevPage }">
                     <a class="page-link" href="#" tabindex="-1" @click.prevent="goToPrev">Anterior</a>
                 </li>
@@ -38,6 +53,8 @@
 </template>
 <script>
     import axios from 'axios';
+    import api from '../api/users';
+    import Swal from 'sweetalert2';
 
     const getUsers = (page, callback) => {
         const params = {page};
@@ -142,6 +159,30 @@
                     this.links = links;
                     this.meta = meta;
                 }
+            },
+            onDelete(id, index) {
+                Swal.fire({
+                    title: 'Você tem certeza?',
+                    text: "Você não poderá reverter isso!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sim, exclua-o!',
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.value) {
+                        api.delete(id)
+                            .then((response) => {
+                                this.users.splice(index, 1);
+                            });
+                        Swal.fire(
+                            'Deletado!',
+                            'Usuário foi deletado.',
+                            'success'
+                        )
+                    }
+                });
             },
         }
     }
