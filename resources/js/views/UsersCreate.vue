@@ -1,23 +1,24 @@
 <template>
     <div>
-        <h1>Create a User</h1>
-        <div v-if="message" class="alert">{{ message }}</div>
-        <form @submit.prevent="onSubmit($event)">
+        <h2 class="col-6 mt-3 mb-3">Criar usuário</h2>
+
+        <form @submit.prevent="onSubmit($event)" class="col-6">
             <div class="form-group">
                 <label for="user_name">Name</label>
-                <input id="user_name" v-model="user.name" />
+                <input id="user_name" v-model="user.name" class="form-control" placeholder="Seu nome" required/>
             </div>
             <div class="form-group">
                 <label for="user_email">Email</label>
-                <input id="user_email" type="email" v-model="user.email" />
+                <input id="user_email" type="email" v-model="user.email" class="form-control" placeholder="Seu e-mail" required/>
             </div>
             <div class="form-group">
                 <label for="user_telefone">Telefone</label>
-                <input id="user_telefone" type="phone" v-model="user.telefone" />
+                <the-mask :mask="['(##) #####-####']" id="user_telefone" type="phone" v-model="user.telefone" class="form-control" required/>
             </div>
+
             <div class="form-group">
-                <button type="submit" :disabled="saving">
-                    {{ saving ? 'Creating...' : 'Create' }}
+                <button type="submit" :disabled="saving" class="btn btn-secondary">
+                    {{ saving ? 'Criando usuário...' : 'Criar usuário' }}
                 </button>
             </div>
         </form>
@@ -25,12 +26,12 @@
 </template>
 <script>
     import api from '../api/users';
+    import Swal from 'sweetalert2';
 
     export default {
         data() {
             return {
                 saving: false,
-                message: false,
                 user: {
                     name: '',
                     email: '',
@@ -40,35 +41,38 @@
         },
         methods: {
             onSubmit($event) {
-                this.saving = true
-                this.message = false
+                this.saving = true;
+
+                if (this.user.telefone.length < 11) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Preencha o campo de telefone corretamente!'
+                    });
+
+                    this.saving = false;
+                    return;
+                }
+
                 api.create(this.user)
                     .then((response) => {
-                        this.$router.push({ name: 'users.edit', params: { id: response.data.data.id } });
-                    }).catch((e) => {
-                        this.message = e.response.data.message || 'There was an issue creating the user.';
-                    }).then(() => this.saving = false)
+                    Swal.fire({
+                        position: 'top',
+                        type: 'success',
+                        title: 'Usuário salvo!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    this.$router.push({ name: 'users.edit', params: { id: response.data.data.id } });
+                }).catch(error => {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Erro ao salvar o usuário!',
+                        footer: error.message
+                    });
+                }).then(_ => this.saving = false);
             }
         }
     }
 </script>
-<style lang="scss" scoped>
-    $red: lighten(red, 30%);
-    $darkRed: darken($red, 50%);
-
-    .form-group {
-        margin-bottom: 1em;
-        label {
-            display: block;
-        }
-    }
-    .alert {
-        background: $red;
-        color: $darkRed;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        width: 50%;
-        border: 1px solid $darkRed;
-        border-radius: 5px;
-    }
-</style>
