@@ -4,7 +4,10 @@
             {{ error }}
         </div>
 
-        <h2 class="mt-3 mb-3">Lista de usuários</h2>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="mt-3 mb-3">Lista de usuários</h2>
+            <router-link :to="{ name: 'users.create' }" tag="button" class="btn btn-secondary">Adicionar usuário</router-link>
+        </div>
 
         <table class="table table-hover" v-if="users">
             <thead>
@@ -45,10 +48,6 @@
                 </li>
             </ul>
         </nav>
-
-        <div>
-            <router-link :to="{ name: 'users.create' }">Add User</router-link>
-        </div>
     </div>
 </template>
 <script>
