@@ -8,6 +8,9 @@ require('./bootstrap');
 
 import Vue from 'vue';
 import Routes from './routes.js';
+import VueTheMask from 'vue-the-mask';
+
+Vue.use(VueTheMask);
 
 import App from './views/App';
 
