@@ -1,7 +1,10 @@
 <template>
     <div>
         <div v-if="!loaded">Loading...</div>
-        <form @submit.prevent="onSubmit($event)" class="col-6 mt-3">
+
+        <h2 class="col-6 mt-3 mb-3">Editar usuário</h2>
+
+        <form @submit.prevent="onSubmit($event)" class="col-6">
             <div class="form-group">
                 <label for="user_name">Nome</label>
                 <input id="user_name" v-model="user.name" class="form-control" placeholder="Seu nome" required/>
