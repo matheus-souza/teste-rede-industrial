@@ -48,6 +48,10 @@
                 </li>
             </ul>
         </nav>
+
+        <div class="d-flex justify-content-end mb-3">
+            <a class="btn btn-outline-secondary" href="http://localhost/api/users/pdf">Relatório de usuários</a>
+        </div>
     </div>
 </template>
 <script>
