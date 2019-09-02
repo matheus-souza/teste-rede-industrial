@@ -6,6 +6,7 @@ use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use PDF;
 
 class UsersController extends Controller
 {
@@ -17,6 +18,21 @@ class UsersController extends Controller
     public function index()
     {
         return UserResource::collection(User::paginate(10));
+    }
+
+    /**
+     * Retorna relatório de usuários em PDF
+     *
+     * @return mixed
+     */
+    public function exportPdf()
+    {
+        $users = UserResource::collection(User::all());
+
+        $pdf = PDF::loadView('reports.users', compact('users'));
+        $pdf->save(storage_path() . '_usuarios.pdf');
+
+        return $pdf->download('usuarios.pdf');
     }
 
     /**
